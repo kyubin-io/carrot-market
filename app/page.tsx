@@ -1,4 +1,5 @@
 import Link from "next/link";
+import "@/lib/db";
 
 export default function Home() {
   // 강제 자동완성 cmd + i
