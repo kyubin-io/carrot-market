@@ -15,10 +15,45 @@ const checkPasswords = ({
   confirm_password: string;
 }) => password === confirm_password;
 
+const checkUniqueUsername = async (username: string) => {
+  const user = await db.user.findUnique({
+    where: {
+      username,
+    },
+    select: {
+      id: true,
+    },
+  });
+  return !Boolean(user);
+};
+
+const checkUniqueEmail = async (email: string) => {
+  const user = await db.user.findUnique({
+    where: {
+      email,
+    },
+    select: {
+      id: true,
+    },
+  });
+  return Boolean(user) === false;
+};
+
 const formSchema = z
   .object({
-    username: z.string().toLowerCase().trim(),
-    email: z.string().email().toLowerCase(),
+    username: z
+      .string()
+      .toLowerCase()
+      .trim()
+      .refine(checkUniqueUsername, "This username is already taken."),
+    email: z
+      .string()
+      .email()
+      .toLowerCase()
+      .refine(
+        checkUniqueEmail,
+        "There is an account already registered with that email."
+      ),
     password: z.string().min(PASSWORD_MIN_LENGTH),
     // .regex(PASSWORD_REGEX, PASSWORD_REGEX_ERROR),
     confirm_password: z.string().min(PASSWORD_MIN_LENGTH),
@@ -35,17 +70,9 @@ export async function createAccount(prevState: any, formData: FormData) {
     password: formData.get("password"),
     confirm_password: formData.get("confirm_password"),
   };
-  const result = formSchema.safeParse(data);
+  const result = await formSchema.safeParseAsync(data);
   if (!result.success) {
     return result.error.flatten();
   } else {
-    const user = await db.user.findUnique({
-      where: {
-        username: result.data.username,
-      },
-    });
-    console.log(user);
-    // check if username is taken
-    // check if the email is already used
   }
 }
