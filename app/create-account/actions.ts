@@ -4,6 +4,7 @@ import {
   PASSWORD_REGEX,
   PASSWORD_REGEX_ERROR,
 } from "@/lib/constants";
+import db from "@/lib/db";
 import { z } from "zod";
 
 const checkPasswords = ({
@@ -17,11 +18,9 @@ const checkPasswords = ({
 const formSchema = z
   .object({
     username: z.string().toLowerCase().trim(),
-    email: z.string().email(),
-    password: z
-      .string()
-      .min(PASSWORD_MIN_LENGTH)
-      .regex(PASSWORD_REGEX, PASSWORD_REGEX_ERROR),
+    email: z.string().email().toLowerCase(),
+    password: z.string().min(PASSWORD_MIN_LENGTH),
+    // .regex(PASSWORD_REGEX, PASSWORD_REGEX_ERROR),
     confirm_password: z.string().min(PASSWORD_MIN_LENGTH),
   })
   .refine(checkPasswords, {
@@ -40,6 +39,13 @@ export async function createAccount(prevState: any, formData: FormData) {
   if (!result.success) {
     return result.error.flatten();
   } else {
-    console.log(result.data);
+    const user = await db.user.findUnique({
+      where: {
+        username: result.data.username,
+      },
+    });
+    console.log(user);
+    // check if username is taken
+    // check if the email is already used
   }
 }
