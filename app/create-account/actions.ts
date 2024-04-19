@@ -6,6 +6,7 @@ import {
 } from "@/lib/constants";
 import db from "@/lib/db";
 import { z } from "zod";
+import bcrypt from "bcrypt";
 
 const checkPasswords = ({
   password,
@@ -74,5 +75,17 @@ export async function createAccount(prevState: any, formData: FormData) {
   if (!result.success) {
     return result.error.flatten();
   } else {
+    const hashedPassword = await bcrypt.hash(result.data.password, 12);
+    const user = await db.user.create({
+      data: {
+        username: result.data.username,
+        email: result.data.email,
+        password: hashedPassword,
+      },
+      select: {
+        id: true,
+      },
+    });
+    console.log(user);
   }
 }
