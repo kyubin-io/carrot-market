@@ -5,7 +5,7 @@ CREATE TABLE "User" (
     "email" TEXT,
     "password" TEXT,
     "phone" TEXT,
-    "github" TEXT,
+    "github_id" TEXT,
     "avatar" TEXT,
     "created_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" DATETIME NOT NULL
@@ -44,7 +44,7 @@ CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 CREATE UNIQUE INDEX "User_phone_key" ON "User"("phone");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "User_github_key" ON "User"("github");
+CREATE UNIQUE INDEX "User_github_id_key" ON "User"("github_id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "SMSToken_token_key" ON "SMSToken"("token");
