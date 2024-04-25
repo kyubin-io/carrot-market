@@ -78,7 +78,7 @@ export default async function ProductDetail({
       </div>
       <div className="fixed w-full bottom-0 left-0 p-5 pb-10 bg-neutral-800 flex justify-between items-center">
         <span className="font-semibold text-xl">
-          {formatToWon(product.price)}원
+          {formatToWon(product.price)}Won
         </span>
         {isOwner ? (
           <button className="bg-red-500 px-5 py-2.5 rounded-md text-white font-semibold">
@@ -89,7 +89,7 @@ export default async function ProductDetail({
           className="bg-orange-500 px-5 py-2.5 rounded-md text-white font-semibold"
           href={``}
         >
-          채팅하기
+          Start Chatting
         </Link>
       </div>
     </div>
