@@ -17,15 +17,16 @@ export default function ListProduct({
   photo,
   id,
 }: ListProductProps) {
+  console.log(photo);
   return (
     <Link href={`/products/${id}`} className="flex gap-5">
-      <div className="relative size-2 rounded-md overflow-hidden">
-        <Image fill src={photo} className="object-cover" alt={title} />
+      <div className="relative size-28 rounded-md overflow-hidden">
+        <Image fill src={`${photo}`} className="object-cover" alt={title} />
       </div>
       <div className="flex flex-col gap-1 *:text-white">
         <span className="text-lg">{title}</span>
         <span className="text-sm text-neutral-500">
-          {formatToTimeAgo.toString()}
+          {formatToTimeAgo(created_at.toString())}
         </span>
         <span className="text-lg font-semibold">{formatToWon(price)}Won</span>
       </div>
